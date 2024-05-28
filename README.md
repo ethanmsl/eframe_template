@@ -1,5 +1,12 @@
 # eframe template
 
+
+
+## Path to Cargo-Generate Template
+
+
+
+// /////////////////////////////////////////// //
 [![dependency status](https://deps.rs/repo/github/emilk/eframe_template/status.svg)](https://deps.rs/repo/github/emilk/eframe_template)
 [![Build Status](https://github.com/emilk/eframe_template/workflows/CI/badge.svg)](https://github.com/emilk/eframe_template/actions?workflow=CI)
 
@@ -11,6 +18,29 @@ You can compile your app natively or for the web, and share it using Github Page
 
 ## Getting started
 
+<details>
+  <summary> Quick Dependency Install Commands, if desired </summary>
+    
+If you already [have rust installed](https://www.rust-lang.org/tools/install) then just:
+    
+```shell
+cargo install cargo-generate
+cargo install just
+cargo install ripgrep
+cargo install sd
+```
+
+</details>
+
+
+```shell
+cargo generate gh:ethanmsl/cargo_generate_eframe_template
+```
+
+<details>
+  <summary> Original instructions and Shell commands to create this template </summary>
+
+**Original instructions**:
 Start by clicking "Use this template" at https://github.com/emilk/eframe_template/ or follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template).
 
 Change the name of the crate: Chose a good name for your project, and change the name to it in:
@@ -24,6 +54,31 @@ Change the name of the crate: Chose a good name for your project, and change the
 * `assets/sw.js`
   * Change the `'./eframe_template.js'` to `./your_crate.js` (in `filesToCache` array)
   * Change the `'./eframe_template_bg.wasm'` to `./your_crate_bg.wasm` (in `filesToCache` array)
+
+
+**Shell Commands**:
+```sh
+echo "changing Cargo.toml"
+sd 'eframe_template' '{{crate_name}}' Cargo.toml
+sd '(authors = ).*' '${1}["{{authors}}"]' Cargo.toml
+
+echo "changing main.rs"
+sd 'eframe_template(::TemplateApp)' '{{crate_name | snake_case}}${1}' src/main.rs
+
+echo "changing index.html"
+sd '(<title>)eframe template(</title>)' '${1}{{crate_name | title_case}}${2}' index.html
+
+sd 'emilk/eframe_template' '{{author_github_name}}/{{crate_name}}' src/app.rs
+
+echo "changing sw.js"
+sd '(\./)eframe_template(\.js|_bg\.wasm)' '${1}{{crate_name | snake_case}}${2}' assets/sw.js
+
+echo "checking diff"
+git diff
+```
+
+</details>
+
 
 ### Learning about egui
 
